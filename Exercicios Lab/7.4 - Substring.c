@@ -21,16 +21,13 @@ int main(int argc, char** argv) {
     int i = 0;
     while(i < strlen(string1) && (substring == 0)){
         if(string1[i] == string2[0]){
-            printf("entrou\n");
             for(int j = 0; j < strlen(string2); j++){
                 int i_t = i;
                 if(string1[i] != string2[j]){
-                    printf("%c - %c / diferente\n", string1[i], string2[j]);
                     substring = 0;
                     i = i_t;
                     break;
                 }else{
-                    printf("%c - %c / igual\n", string1[i], string2[j]);
                     i++;
                     substring = 1;
                 }
