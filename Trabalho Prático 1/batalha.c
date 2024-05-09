@@ -9,6 +9,8 @@
 typedef struct pokemon{
     char nome[MAX_NOME];
     int ataque;
+    int defesa;
+    int vida;
     char tipo[MAX_NOME];
 }pokemon;
 
@@ -21,7 +23,7 @@ void le_poke_terminal(struct pokemon treinador1[], struct pokemon treinador2[], 
         fgets(treinador1[i].tipo, MAX_NOME, stdin);
         treinador1[i].tipo[strlen(treinador1[i].tipo) - 1] = '\0';
         
-        scanf("%d", &treinador1[i].ataque);
+        scanf("%d %d %d", &treinador1[i].ataque, &treinador1[i].defesa, &treinador1[i].vida);
         
         getchar();
     }
@@ -33,7 +35,7 @@ void le_poke_terminal(struct pokemon treinador1[], struct pokemon treinador2[], 
         fgets(treinador2[i].tipo, MAX_NOME, stdin);
         treinador2[i].tipo[strlen(treinador2[i].tipo) - 1] = '\0';
         
-        scanf("%d", &treinador2[i].ataque);
+        scanf("%d %d %d", &treinador2[i].ataque, &treinador2[i].defesa,  &treinador2[i].vida);
         
         getchar();
     }
