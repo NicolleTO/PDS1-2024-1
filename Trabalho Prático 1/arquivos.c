@@ -16,14 +16,9 @@ typedef struct pokemon{
 }pokemon;
 /*
 int conta_linhas(FILE*arquivo){
-  
+
     int num_linhas = 0;
     char a;
-    
-    if(arquivo == NULL){
-        printf("**Erro na abertura do arquivo**\n");
-        return num_linhas;
-    }
     
     do{
         a = fgetc(arquivo);
@@ -36,18 +31,9 @@ int conta_linhas(FILE*arquivo){
 }
 */
 void le_arquivo(struct pokemon treinador[], int n, FILE*arquivo){
-    
-    char lixo[MAX_POKEMON];
-    
-    if(arquivo == NULL){
-        printf("**Erro na abertura do arquivo**\n");
-        return;
-    }
-    
     for(int i = 0; i < n; i++){
         fscanf(arquivo, "%s %d %d %d %s", treinador[i].nome, &treinador[i].ataque, &treinador[i].defesa, &treinador[i].vida, treinador[i].tipo);
     }
-
 }
 
 //O inicio...
