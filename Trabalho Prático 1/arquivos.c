@@ -14,6 +14,7 @@ typedef struct pokemon{
     int vida;
     char tipo[MAX_NOME];
 }pokemon;
+
 /*
 int conta_linhas(FILE*arquivo){
 
@@ -30,9 +31,16 @@ int conta_linhas(FILE*arquivo){
     return num_linhas;
 }
 */
+
 void le_arquivo(struct pokemon treinador[], int n, FILE*arquivo){
     for(int i = 0; i < n; i++){
         fscanf(arquivo, "%s %d %d %d %s", treinador[i].nome, &treinador[i].ataque, &treinador[i].defesa, &treinador[i].vida, treinador[i].tipo);
+    }
+}
+
+void imprime_dados(struct pokemon treinador[], int n){
+     for(int i = 0; i < n; i++){
+        printf("%s %d %d %d %s\n", treinador[i].nome, treinador[i].ataque, treinador[i].defesa, treinador[i].vida, treinador[i].tipo);
     }
 }
 
@@ -51,21 +59,18 @@ int main(int argc, char** argv) {
     }
     
     fscanf(arquivo, "%d %d", &n1, &n2);
-    
     printf("%d %d\n", n1, n2);
     
     le_arquivo(treinador1, n1, arquivo);
     le_arquivo(treinador2, n2, arquivo);
     
     fclose(arquivo);
-   
-    for(int i = 0; i < n1; i++){
-        printf("%s - %d - %d - %d - %s\n", treinador1[i].nome, treinador1[i].ataque, treinador1[i].defesa, treinador1[i].vida, treinador1[i].tipo);
-    }
-    printf("--------\n");
-    for(int i = 0; i < n2; i++){
-        printf("%s %d %d %d %s\n", treinador2[i].nome, treinador2[i].ataque, treinador2[i].defesa, treinador2[i].vida, treinador2[i].tipo);
-    }
-	
+    
+    imprime_dados(treinador1, n1);
+    imprime_dados(treinador2, n2);
+    
+    printf("\n\n");
+    
+    
 	return SUCESSO;
 }
