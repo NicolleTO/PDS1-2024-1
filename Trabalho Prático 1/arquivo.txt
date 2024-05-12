@@ -4,3 +4,22 @@ Vulpix 15 15 15 fogo
 Onix 5 20 20 pedra
 Golem 20 5 10 pedra
 Charmander 20 15 12 fogo
+
+4 1
+Pidgey 15 10 20 voador
+Pikachu 20 15 25 elétrico
+Charmander 25 20 30 fogo
+Squirtle 30 25 35 água
+Charizard 50 205 40 fogo
+
+6 4
+Raichu 25 20 35 elétrico
+Venusaur 35 30 45 planta
+Gyarados 40 35 50 água
+Arcanine 40 35 45 fogo
+Golem 35 40 55 pedra
+Alakazam 45 40 50 psíquico
+Gengar 30 25 40 fantasma
+Mewtwo 50 45 60 psíquico
+Snorlax 45 50 65 normal
+Dragonite 50 40 55 dragão
