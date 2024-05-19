@@ -12,70 +12,70 @@ typedef struct pessoa{
     float salario;
 }pessoa;
 
-void remover_bn(char * str);
 
-int inserir(struct pessoa person[], int n){
-
-    scanf("%s %d %f", person[n].nome, &person[n].idade, &person[n].salario);
-    printf("Registro %s %d %.2f inserido\n", person[n].nome, person[n].idade, person[n].salario);
-    n++;
-
+int inserir(struct pessoa person[], int n) {
+    
+    if (n == MAX_PESSOAS) {
+        int c;
+        while ((c = getchar()) != '\n');
+        printf("Espaco insuficiente\n");
+        
+    } else {
+        scanf("%s %d %f", person[n].nome, &person[n].idade, &person[n].salario);
+        getchar();
+        printf("Registro %s %d %.2f inserido\n", person[n].nome, person[n].idade, person[n].salario);
+        n++;
+    }
+    
     return n;   
 }
 
-void mostrar(struct pessoa person[], char nome[]){
-
+void mostrar(struct pessoa people[], int n){
+    
+    char nome[MAX_TAM];
     int achou = FALHA;
-    int i = 0;
-
-    do{
-        if(strcasecmp(person[i].nome, nome) == SUCESSO){
-            printf("Registro %s %d %.2f\n", person[i].nome, person[i].idade, person[i].salario);
+    
+    fgets(nome, MAX_TAM, stdin);
+    nome[strlen(nome) - 1] = '\0';
+    
+    for(int i = 0; i < n; i++){
+        if(strcmp(people[i].nome, nome) == SUCESSO){
+            printf("Registro %s %d %.2f\n", people[i].nome, people[i].idade, people[i].salario);
             achou = SUCESSO;
         }
-        i++;
-    }while((achou == FALHA) && (i < MAX_PESSOAS));
-
+    }
+    
     if(achou == FALHA){
         printf("Registro ausente\n");
     }
+    
 }
-int main(int argc, char** argv) {
 
+int main() {
+    
     struct pessoa people[MAX_PESSOAS];
     int n = 0;
-    char operacao[MAX_TAM], nome[MAX_TAM];
+    char operacao[MAX_TAM];
 
-    char lixo_s[1];
-    int lixo_n;
+    while (1) {
 
-    do{
-        
         fgets(operacao, MAX_TAM, stdin);
         operacao[strlen(operacao) - 1] = '\0';
 
-        if(strcasecmp(operacao, "inserir") == SUCESSO){
-            if(n >= MAX_PESSOAS){
-                scanf("%s %d %d", lixo_s, &lixo_n, &lixo_n);
-                printf("Espaco insuficiente\n");
-
-            }else{
-                n = inserir(people, n);
-            }
-        }else if(strcasecmp(operacao, "mostrar") == SUCESSO){
-            scanf("%s", nome);
-            mostrar(people, nome);
-        }else if(strcmp(operacao, "") == 0){
+        // Verifica se a entrada é vazia
+        //Se sim, finaliza
+        if (strcmp(operacao, "") == SUCESSO) {
             break;
         }
-        printf("operacao: %s\n", operacao);
-    }while(1);
+        
+        if(strcmp(operacao, "inserir") == SUCESSO){
+            n = inserir(people, n);
+        }else if(strcmp(operacao, "mostrar") == SUCESSO){
+            mostrar(people, n);
+        }else{
+            printf("invalido\n");
+        }
+    }
 
     return SUCESSO;
-}
-
-void remover_bn(char * str)
-{
-    while(*(str++) != '\n');
-    *(--str) = '\0';
 }
