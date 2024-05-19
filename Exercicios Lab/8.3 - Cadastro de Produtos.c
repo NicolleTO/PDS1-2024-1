@@ -1,6 +1,17 @@
 #include <stdio.h>
 #include <string.h>
 
+/*
+a sadia 2
+b sadia 3
+c bic 3
+d sadia 1
+e mac 7
+o bic 1
+p mac 1.2
+u trace 1
+*/
+
 #define SUCESSO 0
 #define FALHA 1
 #define MAX_TAM 50
