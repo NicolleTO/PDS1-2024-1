@@ -27,7 +27,7 @@ estacio
 #define FALHA 1
 
 #define MAX_TAM 50
-#define MAX_ALUNOS 3
+#define MAX_ALUNOS 5
 #define QUANT_MATERIAS 3
 
 #define APROVADO (1 == 1)
@@ -35,9 +35,9 @@ estacio
 #define PONTOS_MIN 60
 
 //importancia
-#define PDS 1
-#define GAAL 2
-#define CALCULO 3
+#define PDS 0
+#define GAAL 1
+#define CALCULO 2
 
 typedef struct aluno{
     char nome[MAX_TAM];
@@ -45,7 +45,7 @@ typedef struct aluno{
     int matricula;
     float notas[QUANT_MATERIAS];
     float media;
-    int situacao;
+    int passou;
 }aluno;
 
 void media(struct aluno turma[]){
@@ -59,9 +59,9 @@ void media(struct aluno turma[]){
         turma[i].media = valor/QUANT_MATERIAS;
         valor = 0;
         if(turma[i].media >= PONTOS_MIN){
-            situacao = APROVADO;
+            turma[i].passou = APROVADO;
         }else{
-            situacao = REPROVADO;
+            turma[i].passou = REPROVADO;
         }
     }
 }
@@ -70,10 +70,21 @@ int melhor(struct aluno turma[]){
     int esse = 0;
     
     for(int i = 0; i < MAX_ALUNOS; i++){
-        if(turma[esse].media < turma[i].media){
+        
+        if(turma[esse].media == turma[i].media){
+            
+            if(turma[esse].notas[PDS] < turma[i].notas[PDS]){
+                esse = i;
+            }else if(turma[esse].notas[GAAL] < turma[i].notas[GAAL]){
+                esse = i;
+            }else if(turma[esse].notas[CALCULO] < turma[i].notas[CALCULO]){
+                esse = i;
+            }
+        }else if(turma[esse].media < turma[i].media){
             esse = i;
         }
     }
+
     return esse;
 }
 
@@ -81,7 +92,16 @@ int pior(struct aluno turma[]){
     int esse = 0;
     
     for(int i = 0; i < MAX_ALUNOS; i++){
-        if(turma[esse].media > turma[i].media){
+        if(turma[esse].media == turma[i].media){
+            
+            if(turma[esse].notas[PDS] > turma[i].notas[PDS]){
+                esse = i;
+            }else if(turma[esse].notas[GAAL] > turma[i].notas[GAAL]){
+                esse = i;
+            }else if(turma[esse].notas[CALCULO] > turma[i].notas[CALCULO]){
+                esse = i;
+            }
+        }else if(turma[esse].media > turma[i].media){
             esse = i;
         }
     }
