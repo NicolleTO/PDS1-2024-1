@@ -2,11 +2,11 @@
 Eduardo
 Silva
 1
-100 100 100
+99 98 100
 David
 Ferreira
 2
-0 0 0
+99 100 98
 Daniel
 Silva
 3
