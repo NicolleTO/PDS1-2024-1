@@ -2,7 +2,7 @@
 lucas
 rezende
 1
-100 100 99
+98 100 99
 mario
 ferreira
 2
@@ -14,7 +14,7 @@ alano
 maria
 luiza
 4
-50 40 20
+99 100 98
 luis
 estacio
 5
