@@ -1,3 +1,18 @@
+/*
+lucas
+rezende
+1
+100 100 99
+mario
+ferreira
+2
+90 29 32
+horacio
+alano
+3
+89 32 43
+*/
+
 #include <stdio.h>
 #include <string.h>
 
