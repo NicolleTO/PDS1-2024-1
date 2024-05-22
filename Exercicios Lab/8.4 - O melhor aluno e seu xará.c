@@ -1,24 +1,44 @@
 /*
-lucas
-rezende
+Eduardo
+Silva
 1
-99 100 98
-mario
-ferreira
+100 100 100
+David
+Ferreira
 2
-90 29 32
-horacio
-alano
+0 0 0
+Daniel
+Silva
 3
-89 32 43
-maria
-luiza
+50 50 50
+Paulo
+Madeira
 4
-99 98 100
-luis
-estacio
+60 60 60
+Paulo
+Silveira
 5
-40 20 50
+70 70 70
+Daniel
+Silveira
+6
+90 90 90
+Paula
+Madeira
+7
+45 45 45
+Rafael
+Ferreira
+8
+75 75 75
+Rafael
+Oliveira
+9
+80 80 80
+Eduardo
+Rocha
+10
+99 80 56
 */
 #include <stdio.h>
 #include <string.h>
