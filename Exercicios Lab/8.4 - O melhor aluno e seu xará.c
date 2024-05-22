@@ -11,6 +11,14 @@ horacio
 alano
 3
 89 32 43
+maria
+luiza
+4
+50 40 20
+luis
+estacio
+5
+40 20 50
 */
 #include <stdio.h>
 #include <string.h>
