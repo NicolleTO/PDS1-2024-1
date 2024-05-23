@@ -44,15 +44,12 @@ Rocha
 #include <string.h>
 
 #define SUCESSO 0
-#define FALHA 1
+#define FALHA -1
 
 #define MAX_TAM 50
-#define MAX_ALUNOS 5
+#define MAX_ALUNOS 10
 #define QUANT_MATERIAS 3
-
-#define APROVADO (1 == 1)
-#define REPROVADO (!APROVADO)
-#define PONTOS_MIN 60
+#define APROVADO 60
 
 //importancia
 #define PDS 0
@@ -65,34 +62,24 @@ typedef struct aluno{
     int matricula;
     float notas[QUANT_MATERIAS];
     float media;
-    int passou;
 }aluno;
 
 void media(struct aluno turma[]){
     
     float valor = 0;
-
     for(int i = 0; i < MAX_ALUNOS; i++){
         for(int j = 0; j < QUANT_MATERIAS; j++){
             valor += turma[i].notas[j];
         }
         turma[i].media = valor/QUANT_MATERIAS;
         valor = 0;
-        if(turma[i].media >= PONTOS_MIN){
-            turma[i].passou = APROVADO;
-        }else{
-            turma[i].passou = REPROVADO;
-        }
     }
 }
-
 int melhor(struct aluno turma[]){
-    int esse = 0;
     
+    int esse = 0;
     for(int i = 0; i < MAX_ALUNOS; i++){
-        
         if(turma[esse].media == turma[i].media){
-            
             if(turma[esse].notas[PDS] < turma[i].notas[PDS]){
                 esse = i;
             }else if(turma[esse].notas[GAAL] < turma[i].notas[GAAL]){
@@ -104,34 +91,38 @@ int melhor(struct aluno turma[]){
             esse = i;
         }
     }
-
     return esse;
 }
-
-int pior(struct aluno turma[]){
-    int esse = 0;
+int encontra_xara(struct aluno turma[], int melhor){
+    
+    int xara = FALHA;
+    printf("Melhor = %s %s\n", turma[melhor].nome, turma[melhor].sobrenome);
     
     for(int i = 0; i < MAX_ALUNOS; i++){
-        if(turma[esse].media == turma[i].media){
-            
-            if(turma[esse].notas[PDS] > turma[i].notas[PDS]){
-                esse = i;
-            }else if(turma[esse].notas[GAAL] > turma[i].notas[GAAL]){
-                esse = i;
-            }else if(turma[esse].notas[CALCULO] > turma[i].notas[CALCULO]){
-                esse = i;
-            }
-        }else if(turma[esse].media > turma[i].media){
-            esse = i;
+        printf("Analisa %d - %s %s\n", i, turma[i].nome, turma[i].sobrenome);
+        if((i != melhor) && ((strcmp(turma[melhor].nome, turma[i].nome)) == SUCESSO)){
+            printf("Achou xara\n");
+            xara = i;
+            break;
         }
     }
-    return esse;
+    return xara;
 }
 
-int situacao(struct aluno melhor_aluno, struct aluno pior_aluno){
+void situacao(struct aluno turma[], int melhor, int xara){
+    
+    if(xara == -1){
+        printf("\nO aluno nao tem xará\n\n");
+    }else if((turma[xara].notas[PDS] >= APROVADO) && (turma[xara].notas[GAAL] >= APROVADO) && (turma[xara].notas[CALCULO] >= APROVADO)){
+        printf("\nO aluno é amigo do seu xara\n\n");
+    }else if((turma[xara].notas[PDS] <= APROVADO) && (turma[xara].notas[GAAL] <= APROVADO) && (turma[xara].notas[CALCULO] <= APROVADO)){
+        printf("\nO aluno quer mudar de nome\n\n");
+    }else{
+        printf("\nO aluno evita seu xara\n\n");
+    }
     
 }
-
+    
 int main(int argc, char** argv) {
     
     struct aluno turma[MAX_ALUNOS];
@@ -147,18 +138,20 @@ int main(int argc, char** argv) {
    
     media(turma);
     melhor_aluno = melhor(turma);
-    pior_aluno = pior(turma);
+    int xara = encontra_xara(turma, melhor_aluno);
     
-    for(int i = 0; i < MAX_ALUNOS; i++){
+    /*for(int i = 0; i < MAX_ALUNOS; i++){
         printf("\n%s %s\n", turma[i].nome, turma[i].sobrenome);
         for(int j = 0; j < QUANT_MATERIAS; j++){
             printf("%.2f ", turma[i].notas[j]);
         }
         printf("\nmedia - %.2f\n", turma[i].media);
-    }
+    }*/
     
     printf("\nMelhor aluno - %s %s | Média - %.2f", turma[melhor_aluno].nome, turma[melhor_aluno].sobrenome, turma[melhor_aluno].media);
-    printf("\nPior aluno - %s %s | Média - %.2f\n", turma[pior_aluno].nome, turma[pior_aluno].sobrenome, turma[pior_aluno].media);
-    
+    printf("\nXara - %s %s | Média - %.2f\n", turma[xara].nome, turma[xara].sobrenome, turma[xara].media);
+  
+    situacao(turma, melhor_aluno, xara);
+  
     return SUCESSO;
 }
