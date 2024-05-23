@@ -96,12 +96,8 @@ int melhor(struct aluno turma[]){
 int encontra_xara(struct aluno turma[], int melhor){
     
     int xara = FALHA;
-    printf("Melhor = %s %s\n", turma[melhor].nome, turma[melhor].sobrenome);
-    
     for(int i = 0; i < MAX_ALUNOS; i++){
-        printf("Analisa %d - %s %s\n", i, turma[i].nome, turma[i].sobrenome);
         if((i != melhor) && ((strcmp(turma[melhor].nome, turma[i].nome)) == SUCESSO)){
-            printf("Achou xara\n");
             xara = i;
             break;
         }
@@ -112,13 +108,13 @@ int encontra_xara(struct aluno turma[], int melhor){
 void situacao(struct aluno turma[], int melhor, int xara){
     
     if(xara == -1){
-        printf("\nO aluno nao tem xará\n\n");
+        printf("O melhor aluno nao tem xará\n");
     }else if((turma[xara].notas[PDS] >= APROVADO) && (turma[xara].notas[GAAL] >= APROVADO) && (turma[xara].notas[CALCULO] >= APROVADO)){
-        printf("\nO aluno é amigo do seu xara\n\n");
+        printf("O melhor aluno é amigo do seu xara\n");
     }else if((turma[xara].notas[PDS] <= APROVADO) && (turma[xara].notas[GAAL] <= APROVADO) && (turma[xara].notas[CALCULO] <= APROVADO)){
-        printf("\nO aluno quer mudar de nome\n\n");
+        printf("O melhor aluno quer mudar de nome\n");
     }else{
-        printf("\nO aluno evita seu xara\n\n");
+        printf("O melhor aluno evita seu xara\n");
     }
     
 }
@@ -126,7 +122,7 @@ void situacao(struct aluno turma[], int melhor, int xara){
 int main(int argc, char** argv) {
     
     struct aluno turma[MAX_ALUNOS];
-    int melhor_aluno, pior_aluno;
+    int melhor_aluno, xara;
     
     for(int i = 0; i < MAX_ALUNOS; i++){
         scanf("%s %s %d", turma[i].nome, turma[i].sobrenome, &turma[i].matricula);
@@ -138,20 +134,15 @@ int main(int argc, char** argv) {
    
     media(turma);
     melhor_aluno = melhor(turma);
-    int xara = encontra_xara(turma, melhor_aluno);
+    xara = encontra_xara(turma, melhor_aluno);
     
-    /*for(int i = 0; i < MAX_ALUNOS; i++){
-        printf("\n%s %s\n", turma[i].nome, turma[i].sobrenome);
-        for(int j = 0; j < QUANT_MATERIAS; j++){
-            printf("%.2f ", turma[i].notas[j]);
-        }
-        printf("\nmedia - %.2f\n", turma[i].media);
-    }*/
-    
-    printf("\nMelhor aluno - %s %s | Média - %.2f", turma[melhor_aluno].nome, turma[melhor_aluno].sobrenome, turma[melhor_aluno].media);
-    printf("\nXara - %s %s | Média - %.2f\n", turma[xara].nome, turma[xara].sobrenome, turma[xara].media);
-  
+    printf("Melhor aluno: %s %s\n", turma[melhor_aluno].nome, turma[melhor_aluno].sobrenome);
+    printf("Matrícula: %d\nMédia: %.2f\n", turma[melhor_aluno].matricula, turma[melhor_aluno].media);
+    printf("Situação: ");
     situacao(turma, melhor_aluno, xara);
+  
+    return SUCESSO;
+}
   
     return SUCESSO;
 }
