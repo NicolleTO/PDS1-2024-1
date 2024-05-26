@@ -2,16 +2,12 @@
 #include <string.h>
 #include <stdlib.h>
 
-//Constantes
 #define SUCESSO 0
 
 #define MAX_POKEMON 100
 #define MAX_NOME 20
 
-#define POKEMON_EM_CAMPO 0
 #define GAME_OVER 0
-
-#define MAX_TREINADORES 2
 
 typedef struct pokemon{
     char nome[MAX_NOME];
@@ -22,27 +18,50 @@ typedef struct pokemon{
 }pokemon;
 
 typedef struct treinador{
-    int quant;
-    struct pokemon ativos[MAX_POKEMON];
-    struct pokemon derrotados[MAX_POKEMON];
+    int num_ativos;
+    struct pokemon team[MAX_POKEMON];
+    int pos_em_campo;
 }treinador;
 
-void le_arquivo(struct pokemon treinador[], int n, FILE*arquivo){
+
+void le_arquivo(struct pokemon pokemons[], int n, FILE*arquivo){
     for(int i = 0; i < n; i++){
-        fscanf(arquivo, "%s %d %d %d %s", treinador[i].nome, &treinador[i].ataque, &treinador[i].defesa, &treinador[i].vida, treinador[i].tipo);
+        fscanf(arquivo, "%s %d %d %d %s", pokemons[i].nome, &pokemons[i].ataque, &pokemons[i].defesa, &pokemons[i].vida, pokemons[i].tipo);
     }
 }
 
-void imprime_dados(struct pokemon treinador[], int n){
-     for(int i = 0; i < n; i++){
-        printf("%s %d %d %d %s\n", treinador[i].nome, treinador[i].ataque, treinador[i].defesa, treinador[i].vida, treinador[i].tipo);
+void imprime_dados(struct pokemon pokemons[], int n){
+    for(int i = 0; i < n; i++){
+        printf("%s %d %d %d %s\n", pokemons[i].nome, pokemons[i].ataque, pokemons[i].defesa, pokemons[i].vida, pokemons[i].tipo);
     }
 }
 
-//O inicio...
+
+void ataque(struct pokemon *atacante, struct pokemon *defensor){
+ 
+    if(atacante->ataque >= defensor->defesa){
+        defensor->vida -= atacante->ataque;
+    }else{
+        defensor->vida--;
+    }
+}
+
+void turno(struct treinador *atacante, struct treinador *defensor){
+    
+    ataque(&atacante->team[atacante->pos_em_campo], &defensor->team[defensor->pos_em_campo]);
+
+    if(defensor->team[defensor->pos_em_campo].vida <= GAME_OVER){
+        printf("%s venceu %s\n", atacante->team[atacante->pos_em_campo].nome, defensor->team[defensor->pos_em_campo].nome);
+        defensor->pos_em_campo++;
+        defensor->num_ativos--;
+    }
+    
+}
+
 int main(int argc, char** argv) {
     
-    struct treinador em_campo[MAX_TREINADORES];
+    struct treinador trainer_um;
+    struct treinador trainer_dois;
     FILE*arquivo;
     
     arquivo = fopen("arquivo.txt", "r");
@@ -52,17 +71,46 @@ int main(int argc, char** argv) {
         return SUCESSO;
     }
     
-    fscanf(arquivo, "%d %d", &em_campo[0].quant, &em_campo[1].quant);
-    printf("%d %d\n", em_campo[0].quant, em_campo[1].quant);
+    fscanf(arquivo, "%d %d", &trainer_um.num_ativos, &trainer_dois.num_ativos);
+    printf("%d %d\n", trainer_um.num_ativos, trainer_dois.num_ativos);
     
-    le_arquivo(em_campo[0].ativos, em_campo[0].quant, arquivo);
-    le_arquivo(em_campo[1].ativos, em_campo[1].quant, arquivo);
-    
-    imprime_dados(em_campo[0].ativos, em_campo[0].quant);
-    imprime_dados(em_campo[1].ativos, em_campo[1].quant);
+    le_arquivo(trainer_um.team, trainer_um.num_ativos, arquivo);
+    le_arquivo(trainer_dois.team, trainer_dois.num_ativos, arquivo);
     
     fclose(arquivo);
+
+    imprime_dados(trainer_um.team, trainer_um.num_ativos);    
+    imprime_dados(trainer_dois.team, trainer_dois.num_ativos);
+   
+    printf("\n");
     
+    do{
+        
+        turno(&trainer_um, &trainer_dois);
+        turno(&trainer_dois, &trainer_um);
+        
+    }while((trainer_um.num_ativos > GAME_OVER) && (trainer_dois.num_ativos > GAME_OVER));
     
+    if(trainer_um.num_ativos != GAME_OVER){
+        printf("\nJogador 1 venceu!\n\nPokemons sobreviventes:\n");
+        for(int i = trainer_um.pos_em_campo; i <= trainer_um.num_ativos; i++){
+            printf("%s\n",  trainer_um.team[i].nome);
+        }
+    }else{
+        printf("\nJogador 2 venceu!\n\nPokemons sobreviventes:\n");
+        for(int i = trainer_dois.pos_em_campo; i <= trainer_dois.num_ativos; i++){
+            printf("%s\n", trainer_dois.team[i].nome);
+        }
+    }
+    
+    printf("\nPokemons derrotados:\n");
+    
+    for(int i = 0; i < trainer_um.pos_em_campo; i++){
+        printf("%s\n", trainer_um.team[i].nome);
+    }
+    
+    for(int i = 0; i < trainer_dois.pos_em_campo; i++){
+        printf("%s\n", trainer_dois.team[i].nome);
+    }
     return SUCESSO;
 }
