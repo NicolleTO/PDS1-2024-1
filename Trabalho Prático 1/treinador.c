@@ -9,6 +9,16 @@
 
 #define GAME_OVER 0
 
+#define ELETRICO "eletrico"
+#define AGUA "agua"
+#define FOGO "fogo"
+#define GELO "gelo"
+#define PEDRA "pedra"
+
+#define FRACO -1
+#define NORMAL 0
+#define FORTE 1 
+
 typedef struct pokemon{
     char nome[MAX_NOME];
     int ataque;
@@ -113,4 +123,42 @@ int main(int argc, char** argv) {
         printf("%s\n", trainer_dois.team[i].nome);
     }
     return SUCESSO;
+}
+
+int fraquezas(struct pokemon *atacante, struct pokemon *defensor){
+
+    int fraqueza = NORMAL;
+    
+    if(strcmp(atacante->tipo, ELETRICO) == SUCESSO){
+        if(strcmp(defensor->tipo, AGUA) == SUCESSO){
+            fraqueza = FORTE;
+        }else if(strcmp(defensor->tipo, PEDRA) == SUCESSO){
+            fraqueza = FRACO;
+        }
+    }else if(strcmp(atacante->tipo, AGUA) == SUCESSO){
+        if(strcmp(defensor->tipo, FOGO) == SUCESSO){
+            fraqueza = FORTE;
+        }else if(strcmp(defensor->tipo, ELETRICO) == SUCESSO){
+            fraqueza = FRACO;
+        }
+    }else if(strcmp(atacante->tipo, FOGO) == SUCESSO){
+        if(strcmp(defensor->tipo, GELO) == SUCESSO){
+            fraqueza = FORTE;
+        }else if(strcmp(defensor->tipo, AGUA) == SUCESSO){
+            fraqueza = FRACO;
+        }
+    }else if(strcmp(atacante->tipo, GELO) == SUCESSO){
+        if(strcmp(defensor->tipo, PEDRA) == SUCESSO){
+            fraqueza = FORTE;
+        }else if(strcmp(defensor->tipo, FOGO) == SUCESSO){
+            fraqueza = FRACO;
+        }
+    }else if(strcmp(atacante->tipo, PEDRA) == SUCESSO){
+        if(strcmp(defensor->tipo, ELETRICO) == SUCESSO){
+            fraqueza = FORTE;
+        }else if(strcmp(defensor->tipo, GELO) == SUCESSO){
+            fraqueza = FRACO;
+        }
+    }
+    return fraqueza;
 }
