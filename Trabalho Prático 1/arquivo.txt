@@ -5,21 +5,100 @@ Onix 5 20 20 pedra
 Golem 20 5 10 pedra
 Charmander 20 15 12 fogo
 
-4 1
-Pidgey 15 10 20 voador
-Pikachu 20 15 25 elétrico
-Charmander 25 20 30 fogo
-Squirtle 30 25 35 água
-Charizard 50 205 40 fogo
+5 5
+Squirtle 15 25 40 agua
+Sandshrew 17 13 28 pedra
+Charmeleon 23 15 24 fogo
+Raichu 19 16 28 eletrico
+Cloyster 59 12 51 gelo
+Charmander 25 12 36 fogo
+Pikachu 25 15 24 eletrico
+Dewgong 17 26 33 gelo
+Wartortle 26 41 19 agua
+Sandslash 62 31 40 pedra
 
-6 4
-Raichu 25 20 35 elétrico
-Venusaur 35 30 45 planta
-Gyarados 40 35 50 água
-Arcanine 40 35 45 fogo
-Golem 35 40 55 pedra
-Alakazam 45 40 50 psíquico
-Gengar 30 25 40 fantasma
-Mewtwo 50 45 60 psíquico
-Snorlax 45 50 65 normal
-Dragonite 50 40 55 dragão
+11 5
+Pachirisu 15 17 9 eletrico
+Ampharos 15 14 11 agua
+Infernape 18 9 23 fogo
+Spheal 14 18 18 gelo
+Rampardos 9 18 22 pedra
+Lotad 14 18 20 agua
+Magmortar 21 16 24 fogo
+Sealeo 15 19 28 gelo
+Suicune 16 15 25 agua
+Dugtrio 12 26 24 pedra
+Charmander 18 12 26 fogo
+Lombre 17 5 39 agua
+Heatran 19 12 11 fogo
+Walrein 15 14 20 gelo
+Bonsly 11 19 17 pedra
+Pikachu 35 30 24 eletrico
+
+26 26
+Squirtle 10 15 15 agua
+Bastiodon 18 30 38 pedra
+Shinx 13 15 28 eletrico
+Chimchar 12 14 9 fogo
+Cloyster 20 25 35 gelo
+Blastoise 15 20 25 agua
+Onix 18 25 35 pedra
+Pikachu 15 10 30 eletrico
+Remoraid 12 14 18 agua
+Spheal 15 18 22 gelo
+Suicune 25 22 40 agua
+Rampardos 25 20 40 pedra
+Lombre 15 14 20 agua
+Charmander 20 15 25 fogo
+Ninetales 25 20 35 fogo
+Wartortle 15 22 28 agua
+Chimchar 20 16 25 fogo
+Magneton 20 18 32 eletrico
+Dugtrio 15 22 30 pedra
+Magmortar 25 20 32 fogo
+Sealeo 20 25 30 gelo
+Bonsly 12 18 25 pedra
+Raichu 18 12 35 eletrico
+Lapras 25 30 40 gelo
+Luxio 16 18 30 eletrico
+Piloswine 18 22 28 gelo
+Snorunt 16 18 25 gelo
+Octillery 20 18 28 agua
+Glalie 22 20 30 gelo
+Heatran 28 24 38 fogo
+Diglett 12 20 28 pedra
+Psyduck 14 16 22 agua
+Pachirisu 15 12 30 eletrico
+Lotad 10 12 15 agua
+Cranidos 20 18 32 pedra
+Vulpix 18 15 22 fogo
+Golduck 18 20 30 agua
+Wartortle 12 18 20 agua
+Growlithe 11 13 14 fogo
+Dewgong 18 22 30 gelo
+Shieldon 15 25 30 pedra
+Magnemite 12 20 28 eletrico
+Monferno 22 18 28 fogo
+Ninetales 19 17 27 fogo
+Voltorb 14 16 25 eletrico
+Charmeleon 22 18 30 fogo
+Swinub 12 14 20 gelo
+Luxray 22 20 35 eletrico
+Infernape 30 22 35 fogo
+Magnezone 25 22 40 eletrico
+Growlithe 15 12 18 fogo
+Blastoise 20 25 40 agua
+
+5 7
+Golduck 11 18 13 agua
+Geodude 11 23 22 pedra
+Raichu 14 18 21 eletrico
+Rapidash 24 11 24 fogo
+Rhydon 15 11 21 pedra
+Charizard 20 22 19 fogo
+Slowbro 21 16 25 agua
+Magnemite 18 22 20 eletrico
+Dewgong 22 14 22 agua
+Tentacool 14 11 24 agua
+Graveler 17 10 19 pedra
+Marowak 19 22 21 pedra
