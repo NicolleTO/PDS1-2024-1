@@ -1,44 +1,58 @@
-/*
-15
-51.1023
-18.1288
-99.328
-66.8079
-96.587
-35.0548
-7.76755
-37.6329
-78.225
-41.4683
-49.123
-26.8194
-13.9931
-25.1837
-25.3504
+#include <stdio.h>
+#include <stdlib.h>
 
- -- 9
+#define SUCESSO 0
 
-20
-45.6689
-90.8238
-52.897
-36.9456
-29.211
-74.1409
-85.389
-46.737
-17.3866
-42.5902
-67.5118
-35.6624
-91.7178
-18.4416
-22.8576
-4.74573
-51.9111
-13.2857
-22.0226
-71.721
+double sinal(double x);
+void media(double vet[], int n, int *i);
+ 
+int main(int argc, char** argv)
+{
+    int n;
+    double *vet;
+    int i = 0;
+    
+    scanf("%d", &n);
+    
+    vet = (double*)malloc(n*sizeof(double));
 
- -- 0
-*/
+    for(int j = 0; j < n; j++){
+        scanf("%lf", &vet[j]);
+    }
+    
+    media(vet, n, &i);
+    printf("%d", i);
+    
+    return SUCESSO;
+}
+
+/*-------------Funções--------------*/
+
+double sinal(double x){
+    if(x > 0){
+        return x;
+    }else{
+        return x *(-1);
+    }
+}
+
+void media(double vet[], int n, int *i){
+    
+    double media = 0.0, aux = 0.0, aux_new;
+    
+    for(int j = 0; j < n; j++){
+        media += vet[j];
+    }
+    media /= n;
+
+    aux = sinal(media - vet[0]);
+   
+    for(int j = 0; j < n; j++){
+        
+        aux_new = sinal(media - vet[j]);
+        if(aux > aux_new){
+            *i = j;
+            aux = aux_new;
+        }
+    }
+}
