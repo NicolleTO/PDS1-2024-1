@@ -17,7 +17,7 @@
 
 #define FRACO -1
 #define NORMAL 0
-#define FORTE 1 
+#define FORTE 1
 
 typedef struct pokemon{
     char nome[MAX_NOME];
@@ -33,54 +33,11 @@ typedef struct treinador{
     int pos_em_campo;
 }treinador;
 
-
-void le_arquivo(struct pokemon pokemons[], int n, FILE*arquivo){
-    for(int i = 0; i < n; i++){
-        fscanf(arquivo, "%s %d %d %f %s", pokemons[i].nome, &pokemons[i].ataque, &pokemons[i].defesa, &pokemons[i].vida, pokemons[i].tipo);
-    }
-}
-
-void imprime_dados(struct pokemon pokemons[], int n){
-    for(int i = 0; i < n; i++){
-        printf("%s %d %d %.2f %s\n", pokemons[i].nome, pokemons[i].ataque, pokemons[i].defesa, pokemons[i].vida, pokemons[i].tipo);
-    }
-}
-
+void le_arquivo(struct pokemon pokemons[], int n, FILE*arquivo);
+void imprime_dados(struct pokemon pokemons[], int n);
 int fraquezas(struct pokemon*atacante, struct pokemon *defensor);
-void ataque(struct pokemon *atacante, struct pokemon *defensor){
-    
-//    printf("%s ataca %s\n", atacante->nome, defensor->nome); 
-
-    int situacao = fraquezas(atacante, defensor);
-    
-    if(atacante->ataque > defensor->defesa){
-        if(situacao == FRACO){
-            defensor->vida -= (atacante->ataque - defensor->defesa)*(0.8);
-        }else if(situacao == FORTE){
-            defensor->vida -= (atacante->ataque - defensor->defesa)*(1.2);
-        }else{
-            defensor->vida -= (atacante->ataque - defensor->defesa);    
-        }
-        
-        //printf("ataque funciona - %s tem %.2f de vida agora\n", defensor->nome, defensor->vida);
-    }else{
-        defensor->vida--;
-        //printf("ataque nao funciona - %s tem %.2f de vida agora\n", defensor->nome, defensor->vida);
-    }
-}
-
-void turno(struct treinador *atacante, struct treinador *defensor){
-    
-    ataque(&atacante->team[atacante->pos_em_campo], &defensor->team[defensor->pos_em_campo]);
-
-    if(defensor->team[defensor->pos_em_campo].vida <= GAME_OVER){
-        printf("%s venceu %s\n", atacante->team[atacante->pos_em_campo].nome, defensor->team[defensor->pos_em_campo].nome);
-        defensor->pos_em_campo++;
-        defensor->num_ativos--;
-        //printf("\n--\n defensor usa %s agora\n--\n", defensor->team[defensor->pos_em_campo].nome);
-    }
-    
-}
+void ataque(struct pokemon *atacante, struct pokemon *defensor);
+void turno(struct treinador *atacante, struct treinador *defensor);
 
 int main(int argc, char** argv) {
     
@@ -137,7 +94,23 @@ int main(int argc, char** argv) {
     for(int i = 0; i < trainer_dois.pos_em_campo; i++){
         printf("%s\n", trainer_dois.team[i].nome);
     }
+    
     return SUCESSO;
+}
+
+
+/*---------------Funções---------------*/
+
+void le_arquivo(struct pokemon pokemons[], int n, FILE*arquivo){
+    for(int i = 0; i < n; i++){
+        fscanf(arquivo, "%s %d %d %f %s", pokemons[i].nome, &pokemons[i].ataque, &pokemons[i].defesa, &pokemons[i].vida, pokemons[i].tipo);
+    }
+}
+
+void imprime_dados(struct pokemon pokemons[], int n){
+    for(int i = 0; i < n; i++){
+        printf("%s %d %d %.2f %s\n", pokemons[i].nome, pokemons[i].ataque, pokemons[i].defesa, pokemons[i].vida, pokemons[i].tipo);
+    }
 }
 
 int fraquezas(struct pokemon *atacante, struct pokemon *defensor){
@@ -176,4 +149,39 @@ int fraquezas(struct pokemon *atacante, struct pokemon *defensor){
         }
     }
     return fraqueza;
+}
+
+void ataque(struct pokemon *atacante, struct pokemon *defensor){
+    
+//    printf("%s ataca %s\n", atacante->nome, defensor->nome); 
+
+    int situacao = fraquezas(atacante, defensor);
+    
+    if(atacante->ataque > defensor->defesa){
+        if(situacao == FRACO){
+            defensor->vida -= atacante->ataque*(0.8) - defensor->defesa;
+        }else if(situacao == FORTE){
+            defensor->vida -= atacante->ataque*(1.2) - defensor->defesa;
+        }else{
+            defensor->vida -= (atacante->ataque - defensor->defesa);    
+        }
+        
+        //printf("ataque funciona - %s tem %.2f de vida agora\n", defensor->nome, defensor->vida);
+    }else{
+        defensor->vida--;
+        //printf("ataque nao funciona - %s tem %.2f de vida agora\n", defensor->nome, defensor->vida);
+    }
+}
+
+void turno(struct treinador *atacante, struct treinador *defensor){
+    
+    ataque(&atacante->team[atacante->pos_em_campo], &defensor->team[defensor->pos_em_campo]);
+
+    if(defensor->team[defensor->pos_em_campo].vida <= GAME_OVER){
+        printf("%s venceu %s\n", atacante->team[atacante->pos_em_campo].nome, defensor->team[defensor->pos_em_campo].nome);
+        defensor->pos_em_campo++;
+        defensor->num_ativos--;
+        //printf("\n--\n defensor usa %s agora\n--\n", defensor->team[defensor->pos_em_campo].nome);
+    }
+    
 }
