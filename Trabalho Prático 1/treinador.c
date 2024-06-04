@@ -66,6 +66,8 @@ int main(int argc, char** argv) {
     printf("\n");
     
     do{
+        
+        //printf("***************\n%s VS %s\n***************\n", trainer_um.team[trainer_um.pos_em_campo].nome, trainer_dois.team[trainer_dois.pos_em_campo].nome);
         //printf("turno1\n");
         turno(&trainer_um, &trainer_dois);
         //printf("turno2\n");
@@ -118,34 +120,49 @@ int fraquezas(struct pokemon *atacante, struct pokemon *defensor){
     int fraqueza = NORMAL;
     
     if(strcmp(atacante->tipo, ELETRICO) == SUCESSO){
+        //printf("-- Pokwmon ELETRICO --\n");
         if(strcmp(defensor->tipo, AGUA) == SUCESSO){
             fraqueza = FORTE;
+            //printf("-- Forte tipo agua --\n");
         }else if(strcmp(defensor->tipo, PEDRA) == SUCESSO){
             fraqueza = FRACO;
+            //printf("-- Fraco tipo pedra --\n");
         }
     }else if(strcmp(atacante->tipo, AGUA) == SUCESSO){
+        //printf("-- Pokwmon AGUA--\n");
         if(strcmp(defensor->tipo, FOGO) == SUCESSO){
+            //printf("-- Forte tipo fogo --\n");
             fraqueza = FORTE;
         }else if(strcmp(defensor->tipo, ELETRICO) == SUCESSO){
             fraqueza = FRACO;
+            //printf("-- Fraco tipo eletrico --\n");
         }
     }else if(strcmp(atacante->tipo, FOGO) == SUCESSO){
+       // printf("-- Pokwmon FOGO--\n");
         if(strcmp(defensor->tipo, GELO) == SUCESSO){
             fraqueza = FORTE;
+            //printf("-- Forte tipo gelo --\n");
         }else if(strcmp(defensor->tipo, AGUA) == SUCESSO){
             fraqueza = FRACO;
+            //printf("-- Fraco tipo agua --\n");
         }
     }else if(strcmp(atacante->tipo, GELO) == SUCESSO){
+        //printf("-- Pokwmon GELO--\n");
         if(strcmp(defensor->tipo, PEDRA) == SUCESSO){
             fraqueza = FORTE;
+            //printf("-- Forte tipo pedra --\n");
         }else if(strcmp(defensor->tipo, FOGO) == SUCESSO){
             fraqueza = FRACO;
+            //printf("-- Fraco tipo fogo --\n");
         }
     }else if(strcmp(atacante->tipo, PEDRA) == SUCESSO){
+        //printf("-- Pokwmon PEDRA--\n");
         if(strcmp(defensor->tipo, ELETRICO) == SUCESSO){
             fraqueza = FORTE;
+            //printf("-- Forte tipo eletrico --\n");
         }else if(strcmp(defensor->tipo, GELO) == SUCESSO){
             fraqueza = FRACO;
+            //printf("-- Forte tipo gelo --\n");
         }
     }
     return fraqueza;
@@ -153,22 +170,34 @@ int fraquezas(struct pokemon *atacante, struct pokemon *defensor){
 
 void ataque(struct pokemon *atacante, struct pokemon *defensor){
     
-//    printf("%s ataca %s\n", atacante->nome, defensor->nome); 
+    //printf("%s ataca %s\n", atacante->nome, defensor->nome); 
 
     int situacao = fraquezas(atacante, defensor);
     
     if(atacante->ataque > defensor->defesa){
         if(situacao == FRACO){
             defensor->vida -= atacante->ataque*(0.8) - defensor->defesa;
+            //printf("Deu menos dano - %.2f\n", atacante->ataque*0.8 - defensor->defesa);
         }else if(situacao == FORTE){
+            //printf("Deu mais dano - %.2f\n", atacante->ataque*1.2 - defensor->defesa);
             defensor->vida -= atacante->ataque*(1.2) - defensor->defesa;
         }else{
+            //printf("Dano nao mudou - %d\n", atacante->ataque - defensor->defesa);
             defensor->vida -= (atacante->ataque - defensor->defesa);    
         }
         
         //printf("ataque funciona - %s tem %.2f de vida agora\n", defensor->nome, defensor->vida);
     }else{
-        defensor->vida--;
+        if(situacao == FRACO){
+            defensor->vida -= 0.8;
+            //printf("Deu poquito dano - 0.8\n");
+        }else if(situacao == FORTE){
+            defensor->vida -= 1.2;
+            //printf("Deu poquito dano - 1.2\n");
+        }else{
+            defensor->vida--;
+            //printf("Deu poquito dano - 1\n");
+        }
         //printf("ataque nao funciona - %s tem %.2f de vida agora\n", defensor->nome, defensor->vida);
     }
 }
