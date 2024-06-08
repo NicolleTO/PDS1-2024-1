@@ -26,6 +26,15 @@ void imprime_dados(struct pokemon pokemons[], int n){
     }
 }
 
+void vencedor(struct treinador vencedor, int num){
+    int j = vencedor.pos_em_campo;
+    printf("\nJogador %d venceu!\n\nPokemons sobreviventes:\n", num);
+    for(int i = 0; i < vencedor.num_ativos; i++){
+        printf("%s\n",  vencedor.team[j].nome);
+        j++;
+    }
+}
+
 float fraquezas(struct pokemon *atacante, struct pokemon *defensor){
 
     float fraqueza = NORMAL;
@@ -92,6 +101,7 @@ void turno(struct treinador *atacante, struct treinador *defensor){
     ataque(&atacante->team[atacante->pos_em_campo], &defensor->team[defensor->pos_em_campo]);
 
     if(defensor->team[defensor->pos_em_campo].vida <= GAME_OVER){
+        
         printf("%s venceu %s\n", atacante->team[atacante->pos_em_campo].nome, defensor->team[defensor->pos_em_campo].nome);
         defensor->pos_em_campo++;
         defensor->num_ativos--;
