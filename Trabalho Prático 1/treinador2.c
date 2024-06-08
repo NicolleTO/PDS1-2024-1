@@ -15,9 +15,9 @@
 #define GELO "gelo"
 #define PEDRA "pedra"
 
-#define FRACO -1
-#define NORMAL 0
-#define FORTE 1 
+#define FRACO 0.8
+#define NORMAL 1
+#define FORTE 1.2
 
 typedef struct pokemon{
     char nome[MAX_NOME];
@@ -33,8 +33,9 @@ typedef struct treinador{
     int pos_em_campo;
 }treinador;
 
-void le_arquivo(struct pokemon pokemons[], int n, FILE *arquivo);
+void le_arquivo(struct pokemon pokemons[], int n, FILE*arquivo);
 void imprime_dados(struct pokemon pokemons[], int n);
+float fraquezas(struct pokemon*atacante, struct pokemon *defensor);
 void ataque(struct pokemon *atacante, struct pokemon *defensor);
 void turno(struct treinador *atacante, struct treinador *defensor);
 
@@ -65,22 +66,29 @@ int main(int argc, char** argv) {
     printf("\n");
     
     do{
-        printf("\nturno 1\n");
+        
+        //printf("***************\n%s VS %s\n***************\n", trainer_um.team[trainer_um.pos_em_campo].nome, trainer_dois.team[trainer_dois.pos_em_campo].nome);
+        //printf("turno1\n");
         turno(&trainer_um, &trainer_dois);
-        printf("\nturno 2\n");
+        //printf("turno2\n");
         turno(&trainer_dois, &trainer_um);
         
     }while((trainer_um.num_ativos > GAME_OVER) && (trainer_dois.num_ativos > GAME_OVER));
     
+    int j;
     if(trainer_um.num_ativos != GAME_OVER){
+        j = trainer_um.pos_em_campo;
         printf("\nJogador 1 venceu!\n\nPokemons sobreviventes:\n");
-        for(int i = trainer_um.pos_em_campo; i <= trainer_um.num_ativos; i++){
-            printf("%s\n",  trainer_um.team[i].nome);
+        for(int i = 0; i < trainer_um.num_ativos; i++){
+            printf("%s\n",  trainer_um.team[j].nome);
+            j++;
         }
     }else{
+        j = trainer_dois.pos_em_campo;
         printf("\nJogador 2 venceu!\n\nPokemons sobreviventes:\n");
-        for(int i = trainer_dois.pos_em_campo; i <= trainer_dois.num_ativos; i++){
-            printf("%s\n", trainer_dois.team[i].nome);
+        for(int i = 0; i < trainer_dois.num_ativos; i++){
+            printf("%s\n", trainer_dois.team[j].nome);
+            j++;
         }
     }
     
@@ -93,13 +101,25 @@ int main(int argc, char** argv) {
     for(int i = 0; i < trainer_dois.pos_em_campo; i++){
         printf("%s\n", trainer_dois.team[i].nome);
     }
+    
     return SUCESSO;
 }
 
+
+/*---------------Funções---------------*/
+
 void le_arquivo(struct pokemon pokemons[], int n, FILE*arquivo){
+    int quant;
     for(int i = 0; i < n; i++){
-        fscanf(arquivo, "%s %d %d %f %s", pokemons[i].nome, &pokemons[i].ataque, &pokemons[i].defesa, &pokemons[i].vida, pokemons[i].tipo);
+        quant = fscanf(arquivo, "%s %d %d %f %s", pokemons[i].nome, &pokemons[i].ataque, &pokemons[i].defesa, &pokemons[i].vida, pokemons[i].tipo);
+        
+        if(quant != 5){
+            printf("Erro - Atributos insuficientes\n ");
+            printf("%s %d %d %f %s\n", pokemons[i].nome, pokemons[i].ataque, pokemons[i].defesa, pokemons[i].vida, pokemons[i].tipo);
+        }
+        
     }
+    
 }
 
 void imprime_dados(struct pokemon pokemons[], int n){
@@ -108,17 +128,64 @@ void imprime_dados(struct pokemon pokemons[], int n){
     }
 }
 
+float fraquezas(struct pokemon *atacante, struct pokemon *defensor){
+
+    float fraqueza = NORMAL;
+    
+    if(strcmp(atacante->tipo, ELETRICO) == SUCESSO){
+        
+        if(strcmp(defensor->tipo, AGUA) == SUCESSO){
+            fraqueza = FORTE;
+        }else if(strcmp(defensor->tipo, PEDRA) == SUCESSO){
+            fraqueza = FRACO;
+        }
+        
+    }else if(strcmp(atacante->tipo, AGUA) == SUCESSO){
+        
+        if(strcmp(defensor->tipo, FOGO) == SUCESSO){
+            fraqueza = FORTE;
+        }else if(strcmp(defensor->tipo, ELETRICO) == SUCESSO){
+            fraqueza = FRACO;
+        }
+    
+        
+    }else if(strcmp(atacante->tipo, FOGO) == SUCESSO){
+        
+        if(strcmp(defensor->tipo, GELO) == SUCESSO){
+            fraqueza = FORTE;
+        }else if(strcmp(defensor->tipo, AGUA) == SUCESSO){
+            fraqueza = FRACO;
+        }
+        
+    }else if(strcmp(atacante->tipo, GELO) == SUCESSO){
+        
+        if(strcmp(defensor->tipo, PEDRA) == SUCESSO){
+            fraqueza = FORTE;
+        }else if(strcmp(defensor->tipo, FOGO) == SUCESSO){
+            fraqueza = FRACO;
+        }
+        
+    }else if(strcmp(atacante->tipo, PEDRA) == SUCESSO){
+        
+        if(strcmp(defensor->tipo, ELETRICO) == SUCESSO){
+            fraqueza = FORTE;
+        }else if(strcmp(defensor->tipo, GELO) == SUCESSO){
+            fraqueza = FRACO;
+        }
+        
+    }
+    
+    return fraqueza;
+}
+
 void ataque(struct pokemon *atacante, struct pokemon *defensor){
- 
-    float diferença;
-    printf("%s ataca %s\n", atacante->nome, defensor->nome);
-    if(atacante->ataque > defensor->defesa){
-        diferença = atacante->ataque - defensor->defesa;
-        defensor->vida -= diferença;
-        printf("ataque funciona - %s tem %.2f de vida agora\n", defensor->nome, defensor->vida);
+    
+    float dano = atacante->ataque * fraquezas(atacante, defensor);
+    
+    if(dano > defensor->defesa){
+        defensor->vida -= dano - defensor->defesa;
     }else{
         defensor->vida--;
-        printf("ataque nao efetivo - %s tem %.2f de vida agora\n", defensor->nome, defensor->vida);
     }
 }
 
@@ -130,6 +197,6 @@ void turno(struct treinador *atacante, struct treinador *defensor){
         printf("%s venceu %s\n", atacante->team[atacante->pos_em_campo].nome, defensor->team[defensor->pos_em_campo].nome);
         defensor->pos_em_campo++;
         defensor->num_ativos--;
-        printf("\n**\n defensor usa %s agora\n**\n", defensor->team[defensor->pos_em_campo].nome);
     }
+    
 }
