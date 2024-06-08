@@ -1,5 +1,5 @@
 #define SUCESSO 0
-#define FALHA 1
+#define FALHA -1
 
 #define MAX_POKEMON 100
 #define MAX_NOME 20
@@ -32,6 +32,7 @@ typedef struct treinador{
 
 int le_arquivo(struct pokemon pokemons[], int n, FILE*arquivo);
 void imprime_dados(struct pokemon pokemons[], int n);
+void vencedor(struct treinador vencedor, int num);
 float fraquezas(struct pokemon*atacante, struct pokemon *defensor);
 void ataque(struct pokemon *atacante, struct pokemon *defensor);
 void turno(struct treinador *atacante, struct treinador *defensor);
