@@ -75,15 +75,20 @@ int main(int argc, char** argv) {
         
     }while((trainer_um.num_ativos > GAME_OVER) && (trainer_dois.num_ativos > GAME_OVER));
     
+    int j;
     if(trainer_um.num_ativos != GAME_OVER){
+        j = trainer_um.pos_em_campo;
         printf("\nJogador 1 venceu!\n\nPokemons sobreviventes:\n");
-        for(int i = trainer_um.pos_em_campo; i <= trainer_um.num_ativos; i++){
-            printf("%s\n",  trainer_um.team[i].nome);
+        for(int i = 0; i < trainer_um.num_ativos; i++){
+            printf("%s\n",  trainer_um.team[j].nome);
+            j++;
         }
     }else{
+        j = trainer_dois.pos_em_campo;
         printf("\nJogador 2 venceu!\n\nPokemons sobreviventes:\n");
-        for(int i = trainer_dois.pos_em_campo; i <= trainer_dois.num_ativos; i++){
-            printf("%s\n", trainer_dois.team[i].nome);
+        for(int i = 0; i < trainer_dois.num_ativos; i++){
+            printf("%s\n", trainer_dois.team[j].nome);
+            j++;
         }
     }
     
@@ -173,31 +178,19 @@ void ataque(struct pokemon *atacante, struct pokemon *defensor){
     //printf("%s ataca %s\n", atacante->nome, defensor->nome); 
 
     int situacao = fraquezas(atacante, defensor);
+    float dano = atacante->ataque;
     
-    if(atacante->ataque > defensor->defesa){
-        if(situacao == FRACO){
-            defensor->vida -= atacante->ataque*(0.8) - defensor->defesa;
-            //printf("Deu menos dano - %.2f\n", atacante->ataque*0.8 - defensor->defesa);
-        }else if(situacao == FORTE){
-            //printf("Deu mais dano - %.2f\n", atacante->ataque*1.2 - defensor->defesa);
-            defensor->vida -= atacante->ataque*(1.2) - defensor->defesa;
-        }else{
-            //printf("Dano nao mudou - %d\n", atacante->ataque - defensor->defesa);
-            defensor->vida -= (atacante->ataque - defensor->defesa);    
-        }
-        
+    if(situacao == FRACO){
+        dano *= (0.8);
+    }else if(situacao == FORTE){
+        dano *= (1.2);
+    }
+    
+    if(dano > defensor->defesa){
+        defensor->vida -= dano - defensor->defesa;
         //printf("ataque funciona - %s tem %.2f de vida agora\n", defensor->nome, defensor->vida);
     }else{
-        if(situacao == FRACO){
-            defensor->vida -= 0.8;
-            //printf("Deu poquito dano - 0.8\n");
-        }else if(situacao == FORTE){
-            defensor->vida -= 1.2;
-            //printf("Deu poquito dano - 1.2\n");
-        }else{
-            defensor->vida--;
-            //printf("Deu poquito dano - 1\n");
-        }
+        defensor->vida--;
         //printf("ataque nao funciona - %s tem %.2f de vida agora\n", defensor->nome, defensor->vida);
     }
 }
