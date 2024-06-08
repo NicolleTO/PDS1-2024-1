@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 #define SUCESSO 0
+#define FALHA 1
 
 #define MAX_POKEMON 100
 #define MAX_NOME 20
@@ -33,7 +34,7 @@ typedef struct treinador{
     int pos_em_campo;
 }treinador;
 
-void le_arquivo(struct pokemon pokemons[], int n, FILE*arquivo);
+int le_arquivo(struct pokemon pokemons[], int n, FILE*arquivo);
 void imprime_dados(struct pokemon pokemons[], int n);
 float fraquezas(struct pokemon*atacante, struct pokemon *defensor);
 void ataque(struct pokemon *atacante, struct pokemon *defensor);
@@ -49,17 +50,24 @@ int main(int argc, char** argv) {
     
     if(arquivo == NULL){
         printf("**Erro na abertura do arquivo**\n");
-        return SUCESSO;
+        return FALHA;
     }
     
-    fscanf(arquivo, "%d %d", &trainer_um.num_ativos, &trainer_dois.num_ativos);
-    printf("%d %d\n", trainer_um.num_ativos, trainer_dois.num_ativos);
+    if(fscanf(arquivo, "%d %d", &trainer_um.num_ativos, &trainer_dois.num_ativos) != 2){
+        printf("**Erro na leitura do numero de pokemons - Variaveis insuficientes**");
+        return FALHA;
+    }
     
-    le_arquivo(trainer_um.team, trainer_um.num_ativos, arquivo);
-    le_arquivo(trainer_dois.team, trainer_dois.num_ativos, arquivo);
+    int erro1 = le_arquivo(trainer_um.team, trainer_um.num_ativos, arquivo);
+    int erro2 = le_arquivo(trainer_dois.team, trainer_dois.num_ativos, arquivo);
+    
+    if(erro1 == FALHA || erro2 == FALHA){
+        return FALHA;
+    }
     
     fclose(arquivo);
 
+    printf("%d %d\n", trainer_um.num_ativos, trainer_dois.num_ativos);
     imprime_dados(trainer_um.team, trainer_um.num_ativos);    
     imprime_dados(trainer_dois.team, trainer_dois.num_ativos);
    
@@ -105,21 +113,23 @@ int main(int argc, char** argv) {
     return SUCESSO;
 }
 
-
 /*---------------Funções---------------*/
 
-void le_arquivo(struct pokemon pokemons[], int n, FILE*arquivo){
-    int quant;
+int le_arquivo(struct pokemon pokemons[], int n, FILE*arquivo){
+
     for(int i = 0; i < n; i++){
-        quant = fscanf(arquivo, "%s %d %d %f %s", pokemons[i].nome, &pokemons[i].ataque, &pokemons[i].defesa, &pokemons[i].vida, pokemons[i].tipo);
-        
-        if(quant != 5){
-            printf("Erro - Atributos insuficientes\n ");
-            printf("%s %d %d %f %s\n", pokemons[i].nome, pokemons[i].ataque, pokemons[i].defesa, pokemons[i].vida, pokemons[i].tipo);
+        if(fscanf(arquivo, "%s %d %d %f %s", pokemons[i].nome, &pokemons[i].ataque, &pokemons[i].defesa, &pokemons[i].vida, pokemons[i].tipo) != 5){
+            
+            printf("**Erro na leitura - Atributos insuficientes**\n");
+            printf("%s %d %d %.2f %s\n", pokemons[i].nome, pokemons[i].ataque, pokemons[i].defesa, pokemons[i].vida, pokemons[i].tipo);
+            
+            //limpa o buffer - impede que o erro apareça duas vezes quando falta o atributo "ataque"
+            while (fgetc(arquivo) != '\n' && !feof(arquivo));
+            
+            return FALHA;
         }
-        
     }
-    
+    return SUCESSO;
 }
 
 void imprime_dados(struct pokemon pokemons[], int n){
