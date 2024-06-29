@@ -145,7 +145,7 @@ int main(int argc, char** argv) {
 
 /**    --Funções--    **/
 
-/* ->Leitura das informações dos pokemons presentes em "arquivo.txt" 
+/* ->Lê as informações dos pokemons presentes em "arquivo.txt" 
  * 
  * !! A função recebe a quantidade total de pokemons de apenas UM treinador
  * Assim, para cadastrar mais treinadores é necessário chamar a função novamente 
@@ -216,21 +216,21 @@ void imprime_vencedor(treinador vencedor, int num){
 }
 
 
-/* -> Determina 
+/* -> Determina a efetividade de um ataque contra outro pokemon baseado
+ * no tipo do atacante e do defensor
  * 
- * !! A função recebe a quantidade total de pokemons de apenas UM treinador
- * Assim, para cadastrar mais treinadores é necessário chamar a função novamente 
- * para cada um deles !!
-
  * Parâmetros
- *      "pokemons": onde o time de pokemons do treinador N será guardado
- *      "n"       : total inicial de pokemons do treinador N
- *      "arquivo" : arquivo a ser lido
+ *      "atacante": usado para verificar o tipo do pokemon que vai atacar
+ *      "defensor": usado para verificar o tipo do pokemon que recebe o ataque
+ * Variável
+ *      "fraqueza": guarda a relação de efetividade entre os tipos de pokemons recebidos
+ *                  Inicializada com NORMAL(1)
  * 
  * return
- *      SUCESSO (0): se todas as informações esperadas foram lidas correntamente
- *      FALHA (-1) : caso contrário
- *
+ *      "fraqueza":
+ *          NORMAL (1)  : sem mudança na efetividade, ataque não alterado
+ *          FORTE (1.2) : pokemon efetivo contra o oponente, ataque será aumentado em 20%
+ *          FRACO (0.8) : pokemon não efetivo contra o oponente, ataque será reduzido em 20%
 */
 float fraquezas(pokemon *atacante, pokemon *defensor){
 
@@ -276,23 +276,43 @@ float fraquezas(pokemon *atacante, pokemon *defensor){
         }else if(strcmp(defensor->tipo, GELO) == SUCESSO){
             fraqueza = FRACO;
         }
-        
     }
-    
     return fraqueza;
 }
 
+/* -> Calcula o valor do ataque de um pokemon e determina a vida do oponente
+ * 
+ * Parâmetros
+ *      "atacante": informações e atributos do pokemon que realizará um ataque
+ *      "defensor": informações e atributos do pokemon que receberá o ataque
+ * 
+ * Variável
+ *      "dano": recebe a multiplicação do ataque do pokemon e sua efetividade
+ *
+*/
 void ataque(pokemon *atacante, pokemon *defensor){
     
     float dano = atacante->ataque * fraquezas(atacante, defensor);
     
+    //Caso o ataque supere a defesa do oponente...
     if(dano > defensor->defesa){
+        //...subtrai o dano de sua vida, se não...
         defensor->vida -= dano - defensor->defesa;
     }else{
+        //...realiza apenas 1 de dano
         defensor->vida--;
     }
 }
 
+/* -> Controla o turno de cada treinador, chamando a função "ataque" para para seu
+ *    pokemon e verificando a vida do pokemon oponente
+ *    Caso ela tenha zerado, o pokemon em campo (do adversário) é trocado pelo próximo na
+ *    lista e o turno finaliza
+ * 
+ * Parâmetros
+ *      "atacante": informações e atributos do pokemon que realizará um ataque
+ *      "defensor": informações e atributos do pokemon que receberá o ataque
+*/
 void turno(treinador *atacante, treinador *defensor){
     
     ataque(&atacante->team[atacante->pos_em_campo], &defensor->team[defensor->pos_em_campo]);
