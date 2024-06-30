@@ -84,6 +84,10 @@ int main(int argc, char** argv) {
         return FALHA;
     }
     
+    if((trainer_um.num_ativos <= GAME_OVER) && (trainer_dois.num_ativos <= GAME_OVER)){
+        printf("**Um dos treinadores precisa ter pelo menos um pokemon para a batalha**\nNão há vencedores");
+        return FALHA;
+    }
     //Lê o conteúdo dos arquivos e recebe um valor que indica se tudo deu certo ou não
     //Se correr tudo bem "erro" incrementa 0, se houver problemas, -1
     erro += le_arquivo(trainer_um.team, trainer_um.num_ativos, arquivo);
@@ -171,6 +175,10 @@ int le_arquivo(pokemon pokemons[], int n, FILE*arquivo){
             
             //limpa o buffer - impede que o erro passe despercebido uma vez
             while (fgetc(arquivo) != '\n' && !feof(arquivo));
+            return FALHA;
+        }else if((pokemons[i].ataque < GAME_OVER) || (pokemons[i].defesa < GAME_OVER) || (pokemons[i].vida < GAME_OVER)){
+            printf("**Os atributos do seu pokemon (ataque, defesa e/ou vida) não podem ser negativos**\n");
+            printf("%s %d %d %.2f %s\n", pokemons[i].nome, pokemons[i].ataque, pokemons[i].defesa, pokemons[i].vida, pokemons[i].tipo);
             return FALHA;
         }
     }
@@ -286,10 +294,13 @@ void ataque(pokemon *atacante, pokemon *defensor){
     }
 }
 
-/* -> Controla o turno de cada treinador, chamando a função "ataque" para seu
- *    pokemon e verificando a vida do pokemon oponente
- *    Caso ela tenha zerado, o pokemon em campo (do adversário) é trocado pelo próximo na
- *    lista e o turno finaliza
+/* -> Controla o turno de cada treinador
+ *    Caso o atacante coloque um pokemon derrotado em campo marcado como ativo, 
+ *    o turno termina e passa para o adversário
+ *    Caso esteja tudo certo, chama a função "ataque" e verifica a vida do 
+ *    pokemon oponente após sofrer dano
+ *    Caso a vida tenha zerado, o pokemon em campo (do defensor) é trocado pelo próximo no
+ *    vetor e o turno finaliza
  * 
  * Parâmetros
  *      "atacante": informações e atributos do pokemon que realizará um ataque
@@ -297,6 +308,14 @@ void ataque(pokemon *atacante, pokemon *defensor){
 */
 void turno(treinador *atacante, treinador *defensor){
     
+    //Caso o pokemon entre na batalha já derrotado, ou seja, registrado com vida = 0, ele é elimando e o turno acaba
+    if((atacante->team[atacante->pos_em_campo].vida <= GAME_OVER) && (atacante->num_ativos > GAME_OVER)){
+        printf("Pokemon derrotado colocado em campo (%s), o turno terminou\n", atacante->team[atacante->pos_em_campo].nome);
+        atacante->pos_em_campo++;
+        atacante->num_ativos--;
+        return;
+    }
+    //Se não, cotinua normalmente
     ataque(&atacante->team[atacante->pos_em_campo], &defensor->team[defensor->pos_em_campo]);
     
     if(defensor->team[defensor->pos_em_campo].vida <= GAME_OVER){       
