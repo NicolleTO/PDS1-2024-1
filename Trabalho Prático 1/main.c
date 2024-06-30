@@ -123,7 +123,7 @@ int main(int argc, char** argv) {
     /**    --Fim de Jogo--    **/
 
     //Verifica qual treinador venceu e imprime seu time sobrevivente
-    if(trainer_um.num_ativos <= GAME_OVER){
+    if(trainer_um.num_ativos > GAME_OVER){
        //Se treinador um venceu...
        imprime_vencedor(trainer_um, 1);
     }else{
