@@ -84,11 +84,18 @@ int main(int argc, char** argv) {
         return FALHA;
     }
 
-    //Caso um dos treinadores não possua pokemons, encerra o programa
+    //Caso um dos treinadores não possua pokemons...
     if((trainer_um.num_ativos <= GAME_OVER) || (trainer_dois.num_ativos <= GAME_OVER)){
-        printf("**Cada treinador precisa ter pelo menos um pokemon para a batalha**\nNão há vencedores");
+        printf("**Cada treinador precisa ter pelo menos um pokemon para a batalha**\n");
         return FALHA;
     }
+    
+    //...ou tenha mais do que permitido, encerra o programa 
+    if((trainer_um.num_ativos > MAX_POKEMON) || (trainer_dois.num_ativos > MAX_POKEMON)){
+        printf("**Cada treinador pode ter no máximo 100 pokemons**\n");
+        return FALHA;
+    }
+    
     //Lê o conteúdo dos arquivos e recebe um valor que indica se tudo deu certo ou não
     //Se correr tudo bem "erro" incrementa 0, se houver problemas, -1
     erro += le_arquivo(trainer_um.team, trainer_um.num_ativos, arquivo);
