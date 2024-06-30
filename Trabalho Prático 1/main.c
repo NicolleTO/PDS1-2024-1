@@ -83,9 +83,10 @@ int main(int argc, char** argv) {
         fclose(arquivo);
         return FALHA;
     }
-    
-    if((trainer_um.num_ativos <= GAME_OVER) && (trainer_dois.num_ativos <= GAME_OVER)){
-        printf("**Um dos treinadores precisa ter pelo menos um pokemon para a batalha**\nNão há vencedores");
+
+    //Caso um dos treinadores não possua pokemons, encerra o programa
+    if((trainer_um.num_ativos <= GAME_OVER) || (trainer_dois.num_ativos <= GAME_OVER)){
+        printf("**Cada treinador precisa ter pelo menos um pokemon para a batalha**\nNão há vencedores");
         return FALHA;
     }
     //Lê o conteúdo dos arquivos e recebe um valor que indica se tudo deu certo ou não
