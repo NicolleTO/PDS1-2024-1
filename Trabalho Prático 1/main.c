@@ -79,7 +79,7 @@ int main(int argc, char** argv) {
     //...ou ler a quantidade de pokemons dos treinadores, encerra o programa
     //Função "fscanf": retorna a quantidade de valores lidos no arquivo
     if(fscanf(arquivo, "%d %d", &trainer_um.num_ativos, &trainer_dois.num_ativos) != 2){
-        printf("**Erro na leitura do número de pokemons - Variáveis insuficientes**");
+        printf("**Erro na leitura do nemero de pokemons - Variaveis insuficientes**");
         fclose(arquivo);
         return FALHA;
     }
@@ -92,7 +92,7 @@ int main(int argc, char** argv) {
     
     //...ou tenha mais do que permitido, encerra o programa 
     if((trainer_um.num_ativos > MAX_POKEMON) || (trainer_dois.num_ativos > MAX_POKEMON)){
-        printf("**Cada treinador pode ter no máximo 100 pokemons**\n");
+        printf("**Cada treinador pode ter no maximo 100 pokemons**\n");
         return FALHA;
     }
     
@@ -178,14 +178,13 @@ int le_arquivo(pokemon pokemons[], int n, FILE*arquivo){
         //Função "fscanf": retorna a quantidade de valores lidos
         if(fscanf(arquivo, "%s %d %d %f %s", pokemons[i].nome, &pokemons[i].ataque, &pokemons[i].defesa, &pokemons[i].vida, pokemons[i].tipo) != 5){
             
-            printf("**Erro na leitura - Atributos insuficientes**\n");
-            printf("%s %d %d %.2f %s\n", pokemons[i].nome, pokemons[i].ataque, pokemons[i].defesa, pokemons[i].vida, pokemons[i].tipo);
+            printf("**Erro na leitura - Atributos/pokemons insuficientes**\n");
             
             //limpa o buffer - impede que o erro passe despercebido uma vez
             while (fgetc(arquivo) != '\n' && !feof(arquivo));
             return FALHA;
         }else if((pokemons[i].ataque < GAME_OVER) || (pokemons[i].defesa < GAME_OVER) || (pokemons[i].vida < GAME_OVER)){
-            printf("**Os atributos do seu pokemon (ataque, defesa e/ou vida) não podem ser negativos**\n");
+            printf("**Os atributos do seu pokemon (ataque, defesa e/ou vida) nao podem ser negativos**\n");
             printf("%s %d %d %.2f %s\n", pokemons[i].nome, pokemons[i].ataque, pokemons[i].defesa, pokemons[i].vida, pokemons[i].tipo);
             return FALHA;
         }
